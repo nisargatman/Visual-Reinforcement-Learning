@@ -25,3 +25,34 @@ config = {
 
 }
 
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
+
+agent_host = MalmoPython.agent_host()
+mission_xml = ""
+my_mission = MalmoPython.MissionSpec(missionXML, True)
+my_mission_record = MalmoPython.MissionRecordSpec()
+
+max_retries = 3
+for retry in range(max_retries):
+    try:
+        agent_host.startMission( my_mission, my_mission_record )
+        break
+    except RuntimeError as e:
+        if retry == max_retries - 1:
+            print "Error starting mission:",e
+            exit(1)
+        else:
+            time.sleep(2)
+
+print "Waiting for the mission to start ",
+world_state = agent_host.getWorldState()
+while not world_state.has_mission_begun:
+    sys.stdout.write(".")
+    time.sleep(0.1)
+    world_state = agent_host.getWorldState()
+    for error in world_state.errors:
+        print "Error:",error.text
+
+print
+print "Mission running "
+
