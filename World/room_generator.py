@@ -27,8 +27,13 @@ config = {
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 
-agent_host = MalmoPython.agent_host()
-mission_xml = ""
+agent_host = MalmoPython.AgentHost()
+
+mission_file = 'xmls/mission_xml.xml'
+with open(mission_file, 'r') as f:
+    print "Loading mission from %s" % mission_file
+    missionXML = f.read()
+    
 my_mission = MalmoPython.MissionSpec(missionXML, True)
 my_mission_record = MalmoPython.MissionRecordSpec()
 
