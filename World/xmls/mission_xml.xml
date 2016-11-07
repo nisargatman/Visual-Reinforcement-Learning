@@ -24,15 +24,7 @@
     <AgentHandlers>
       <DiscreteMovementCommands/>
       <ObservationFromFullStats/>
-      <RewardForTouchingBlockType>
-        <Block reward="-100.0" type="lava" behaviour="onceOnly"/>
-        <Block reward="100.0" type="lapis_block" behaviour="onceOnly"/>
-      </RewardForTouchingBlockType>
       <RewardForSendingCommand reward="-1" />
-      <AgentQuitFromTouchingBlockType>
-          <Block type="lava" />
-          <Block type="lapis_block" />
-      </AgentQuitFromTouchingBlockType>
     </AgentHandlers>
   </AgentSection>
 
