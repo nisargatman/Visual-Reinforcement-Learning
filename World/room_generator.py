@@ -23,41 +23,63 @@ config = {
     'cakes':"yes",
     'cake_pos':(1)
 
-}
+} # dictionary that contains configuraiton for setting up world
 
-sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
+def build_world(my_mission):
+    for i in range(config['length']):
+        for j in range(config['breadth']):
+            pass
 
-agent_host = MalmoPython.AgentHost()
+def main():
+    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 
-mission_file = 'xmls/mission_xml.xml'
-with open(mission_file, 'r') as f:
-    print "Loading mission from %s" % mission_file
-    missionXML = f.read()
-    
-my_mission = MalmoPython.MissionSpec(missionXML, True)
-my_mission_record = MalmoPython.MissionRecordSpec()
+    agent_host = MalmoPython.AgentHost()
 
-max_retries = 3
-for retry in range(max_retries):
-    try:
-        agent_host.startMission( my_mission, my_mission_record )
-        break
-    except RuntimeError as e:
-        if retry == max_retries - 1:
-            print "Error starting mission:",e
-            exit(1)
-        else:
-            time.sleep(2)
+    mission_file = 'xmls/mission_xml.xml'
+    with open(mission_file, 'r') as f:
+        print "Loading mission from %s" % mission_file
+        missionXML = f.read()
 
-print "Waiting for the mission to start ",
-world_state = agent_host.getWorldState()
-while not world_state.has_mission_begun:
-    sys.stdout.write(".")
-    time.sleep(0.1)
+    my_mission = MalmoPython.MissionSpec(missionXML, True)
+    my_mission_record = MalmoPython.MissionRecordSpec("./saved_data.tgz")
+    my_mission.requestVideo( 640, 480 )
+
+    max_retries = 3
+    for retry in range(max_retries):
+        try:
+            agent_host.startMission( my_mission, my_mission_record )
+            break
+        except RuntimeError as e:
+            if retry == max_retries - 1:
+                print "Error starting mission:",e
+                exit(1)
+            else:
+                time.sleep(2)
+
+    print "Waiting for the mission to start",
     world_state = agent_host.getWorldState()
-    for error in world_state.errors:
-        print "Error:",error.text
+    while not world_state.has_mission_begun:
+        sys.stdout.write(".")
+        time.sleep(0.1)
+        world_state = agent_host.getWorldState()
+        for error in world_state.errors:
+            print "Error:",error.text
+    print
 
-print
-print "Mission running "
+    # main loop:
+    while world_state.is_mission_running:
+        agent_host.sendCommand( "move 1" )
+        time.sleep(0.5)
+        world_state = agent_host.getWorldState()
+        print "video,observations,rewards received:",world_state.number_of_video_frames_since_last_state,world_state.number_of_observations_since_last_state,world_state.number_of_rewards_since_last_state
+        for reward in world_state.rewards:
+            print "Summed reward:",reward.getValue()
+        for error in world_state.errors:
+            print "Error:",error.text
+        for frame in world_state.video_frames:
+            print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
+            #image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
+    print "Mission has stopped."
 
+if __name__ == '__main__':
+    main()
