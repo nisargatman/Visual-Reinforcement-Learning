@@ -54,6 +54,10 @@ def build_world(my_mission):
     my_mission.drawBlock(config['length'],start_y,config['breadth']-1,'birch_door')
     for i in range(config['length']/2):
         my_mission.drawLine(config['length']/4+i,start_y,config['length']/4,config['length']/4+i,start_y,config['length']*3/4,'carpet')
+    my_mission.drawLine(14,start_y,8,14,start_y,13,"iron_block")
+    my_mission.drawLine(14,start_y+1,8,14,start_y+1,13,"double_stone_slab")
+    for i in range(5):
+        my_mission.drawLine(13-i,start_y,8,13-i,start_y,13,"wool")
     my_mission.drawLine(config['length']*3/4,start_y,config['length']/4,config['length']*3/4,start_y,config['breadth']*3/4,'birch_stairs')
     if config['fire'] == "yes":
         my_mission.drawBlock(config['length']/2,start_y,config['breadth']-1,'fire')
