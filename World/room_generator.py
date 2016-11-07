@@ -34,7 +34,7 @@ def build_world(my_mission):
         my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
     if config['ceiling'] == "yes":
         for i in range(config['length']):
-            my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone")
+            my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone_wall")
     torches = config['torch_pos']
     for i in range(config['num_torches']):    
         rand = torches[i]
@@ -79,12 +79,13 @@ def build_world(my_mission):
     my_mission.drawBlock(1,start_y+1,config['breadth']/2+1,'wooden_slab')
     my_mission.drawBlock(1,start_y+1,config['breadth']/2+2,'wooden_slab')
     my_mission.drawBlock(1,start_y+1,config['breadth']/2,'iron_block')
-    my_mission.drawBlock(2,start_y+1,config['breadth']/2,'stained_glass_pane')
     my_mission.drawLine(12,start_y,2,16,start_y,2,'nether_brick_fence')
     my_mission.drawLine(12,start_y,3,16,start_y,3,'nether_brick_fence')
     my_mission.drawLine(12,start_y+1,2,16,start_y+1,2,'wooden_pressure_plate')
     my_mission.drawLine(12,start_y+1,3,16,start_y+1,3,'wooden_pressure_plate')
     my_mission.drawBlock(6,start_y,5,"oak_stairs")
+    my_mission.drawLine(1,start_y,19,5,start_y,19,'noteblock')
+    my_mission.drawLine(1,start_y+1,19,5,start_y+1,19,'noteblock')
 
 
 
