@@ -11,14 +11,12 @@ config = {
     'ceiling':"yes",
     'num_torches':7,
     'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10)),
+    'num_windows':6,
+    'window_pos':((0,0,10),(0,0,19),(10,0,0),(10,0,20),(19,0,0),(20,0,10)),
     'height_bookcase':3,
     'bookcase_pos':2,
-    'nun_sofas':1,
-    'sofa_pos':(2),
-    'num_tables':1,
-    'table_pos':(1),
-    'cakes':"yes",
-    'cake_pos':(1)
+    'fire':"yes",
+    'fire_pos':"wall"
 
 } # dictionary that contains configuraiton for setting up world
 
@@ -44,15 +42,25 @@ def build_world(my_mission):
         ty = rand[1]
         tz = rand[2]
         my_mission.drawBlock(tx,ty+start_y,tz,"torch")
+    windows = config['window_pos']
+    for i in range(config['num_windows']):    
+        rand = windows[i]
+        tx = rand[0]
+        ty = rand[1]
+        tz = rand[2]
+        my_mission.drawBlock(tx,ty+start_y+2,tz,"glass")
     for i in range(config['height_bookcase']):
         my_mission.drawLine(config['bookcase_pos'],start_y+i,1,config['bookcase_pos']+7,start_y+i,1,'bookshelf')
-    my_mission.drawBlock(20,start_y,19,'birch_door')
+    my_mission.drawBlock(config['length'],start_y,config['breadth']-1,'birch_door')
     for i in range(config['length']/2):
-        my_mission.drawLine(5+i,start_y,5,5+i,start_y,15,'carpet')
-
-
+        my_mission.drawLine(config['length']/4+i,start_y,config['length']/4,config['length']/4+i,start_y,config['length']*3/4,'carpet')
+    my_mission.drawLine(config['length']*3/4,start_y,config['length']/4,config['length']*3/4,start_y,config['breadth']*3/4,'birch_stairs')
+    if config['fire'] == "yes":
+        my_mission.drawBlock(config['length']/2,start_y,config['breadth']-1,'fire')
+        my_mission.drawBlock(config['length']/2,start_y+1,config['breadth']-1,'brick_block')
+        my_mission.drawBlock(config['length']/2-1,start_y,config['breadth']-1,'brick_block')
+        my_mission.drawBlock(config['length']/2+1,start_y,config['breadth']-1,'brick_block')
     
-
 
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
