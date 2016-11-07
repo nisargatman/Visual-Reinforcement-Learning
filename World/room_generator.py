@@ -9,8 +9,8 @@ config = {
     'breadth':20,
     'height':5,
     'ceiling':"yes",
-    'num_torches':8,
-    'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10),(19,0,19)),
+    'num_torches':7,
+    'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10)),
     'height_bookcase':3,
     'bookcase_pos':2,
     'nun_sofas':1,
@@ -29,7 +29,10 @@ def build_world(my_mission):
     for i in range(config['height']):
         my_mission.drawLine(start_x, start_y+i, start_z, start_x+config['length'], start_y+i, start_z, "cobblestone")
         my_mission.drawLine(start_x, start_y+i, start_z, start_x, start_y+i, start_z+config['breadth'], "cobblestone")
-        my_mission.drawLine(start_x+config['length'], start_y+i, start_z, start_x+config['length'], start_y+i, start_z+config['breadth'],"cobblestone")
+        if i>1:
+            my_mission.drawLine(start_x+config['length'], start_y+i, start_z, start_x+config['length'], start_y+i, start_z+config['breadth'],"cobblestone")
+        else:
+            my_mission.drawLine(start_x+config['length'], start_y+i, start_z, start_x+config['length'], start_y+i, start_z+config['breadth']-2,"cobblestone")
         my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
     if config['ceiling'] == "yes":
         for i in range(config['length']):
@@ -44,8 +47,10 @@ def build_world(my_mission):
     for i in range(config['height_bookcase']):
         my_mission.drawLine(config['bookcase_pos'],start_y+i,1,config['bookcase_pos']+7,start_y+i,1,'bookshelf')
     my_mission.drawBlock(20,start_y,19,'birch_door')
-    my_mission.drawBlock(20,start_y+1,19,'birch_door')
-    my_mission.drawBlock(20,start_y+2,19,'birch_door')
+    for i in range(config['length']/2):
+        my_mission.drawLine(5+i,start_y,5,5+i,start_y,15,'carpet')
+
+
     
 
 
