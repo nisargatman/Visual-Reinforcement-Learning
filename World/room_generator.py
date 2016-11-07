@@ -37,7 +37,8 @@ def build_world(my_mission):
         my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
     if config['ceiling'] == "yes":
         for i in range(config['length']):
-            my_mission.drawLine()
+            my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone")
+    
 
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
