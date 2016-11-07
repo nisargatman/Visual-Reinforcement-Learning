@@ -83,10 +83,11 @@ def build_world(my_mission):
     my_mission.drawLine(12,start_y,3,16,start_y,3,'nether_brick_fence')
     my_mission.drawLine(12,start_y+1,2,16,start_y+1,2,'wooden_pressure_plate')
     my_mission.drawLine(12,start_y+1,3,16,start_y+1,3,'wooden_pressure_plate')
-    my_mission.drawBlock(6,start_y,5,"oak_stairs")
-    my_mission.drawLine(1,start_y,19,5,start_y,19,'noteblock')
-    my_mission.drawLine(1,start_y+1,19,5,start_y+1,19,'noteblock')
-
+    my_mission.drawBlock(config['length']/4,start_y,config['length']/4,"oak_stairs")
+    for i in range(4):
+        my_mission.drawLine(3,start_y+i,19,5,start_y+i,19,'noteblock')
+    my_mission.drawBlock(config['length']-1,start_y,config['breadth']/2,"chest")
+    my_mission.drawBlock(3,start_y,config['breadth']/2,"stonebrick")
 
 
 def main():
