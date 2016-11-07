@@ -5,9 +5,9 @@ import time
 import random
 
 config = {
-    'length':50,
-    'breadth':50,
-    'height':20,
+    'length':20,
+    'breadth':20,
+    'height':5,
     'ceiling':"yes",
     'num_torches':5,
     'torch_pos':(1,2,3,4,5),
@@ -27,7 +27,17 @@ config = {
 } # dictionary that contains configuraiton for setting up world
 
 def build_world(my_mission):
-    pass
+    start_x = 0
+    start_y = 227
+    start_z = 0
+    for i in range(config['height']):
+        my_mission.drawLine(start_x, start_y+i, start_z, start_x+config['length'], start_y+i, start_z, "cobblestone")
+        my_mission.drawLine(start_x, start_y+i, start_z, start_x, start_y+i, start_z+config['breadth'], "cobblestone")
+        my_mission.drawLine(start_x+config['length'], start_y+i, start_z, start_x+config['length'], start_y+i, start_z+config['breadth'],"cobblestone")
+        my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
+    if config['ceiling'] == "yes":
+        for i in range(config['length']):
+            my_mission.drawLine()
 
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
@@ -38,7 +48,7 @@ def main():
         print "Loading mission from %s" % mission_file
         mission_xml = f.read()
     my_mission = MalmoPython.MissionSpec(mission_xml,True)
-
+    my_mission.forceWorldReset()
     build_world(my_mission)
 
     my_mission.requestVideo( 640, 480 )
@@ -74,15 +84,14 @@ def main():
         agent_host.sendCommand("move 1")
         time.sleep(0.5)
         world_state = agent_host.getWorldState()
-        print "video,observations,rewards received:",world_state.number_of_video_frames_since_last_state,world_state.number_of_observations_since_last_state,world_state.number_of_rewards_since_last_state
         for reward in world_state.rewards:
             print "Summed reward:",reward.getValue()
         for error in world_state.errors:
             print "Error:",error.text
         for frame in world_state.video_frames:
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
-            print type(frame.pixels)
-            #image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
+            image = frame.pixels
+            print image[1], " ", image[4], " ", image[7]
     print "Mission has stopped."
 
 if __name__ == "__main__":
