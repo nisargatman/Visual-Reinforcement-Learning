@@ -9,8 +9,8 @@ config = {
     'breadth':20,
     'height':5,
     'ceiling':"yes",
-    'num_torches':5,
-    'torch_pos':(1,2,3,4,5),
+    'num_torches':8,
+    'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10),(19,0,19)),
     'num_chairs':1,
     'chair_pos':(1),
     'height_bookcase':10,
@@ -38,7 +38,14 @@ def build_world(my_mission):
     if config['ceiling'] == "yes":
         for i in range(config['length']):
             my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone")
-    
+    torches = config['torch_pos']
+    for i in range(config['num_torches']):    
+        rand = torches[i]
+        tx = rand[0]
+        ty = rand[1]
+        tz = rand[2]
+        my_mission.drawBlock(tx,ty+start_y,tz,"torch")
+
 
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
