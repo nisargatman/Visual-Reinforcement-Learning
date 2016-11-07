@@ -59,8 +59,16 @@ def build_world(my_mission):
         my_mission.drawBlock(config['length']/2,start_y,config['breadth']-1,'fire')
         my_mission.drawBlock(config['length']/2,start_y+1,config['breadth']-1,'brick_block')
         my_mission.drawBlock(config['length']/2-1,start_y,config['breadth']-1,'brick_block')
+        my_mission.drawBlock(config['length']/2-2,start_y,config['breadth']-1,'red_flower')
         my_mission.drawBlock(config['length']/2+1,start_y,config['breadth']-1,'brick_block')
-    
+        my_mission.drawBlock(config['length']/2+2,start_y,config['breadth']-1,'red_flower')
+    my_mission.drawBlock(1,start_y,config['breadth']/2,'brewing_stand')
+    my_mission.drawLine(12,start_y,2,16,start_y,2,'nether_brick_fence')
+    my_mission.drawLine(12,start_y,3,16,start_y,3,'nether_brick_fence')
+    my_mission.drawLine(12,start_y+1,2,16,start_y+1,2,'wooden_pressure_plate')
+    my_mission.drawLine(12,start_y+1,3,16,start_y+1,3,'wooden_pressure_plate')
+
+
 
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
