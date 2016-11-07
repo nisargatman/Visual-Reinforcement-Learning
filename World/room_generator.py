@@ -13,8 +13,8 @@ config = {
     'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10),(19,0,19)),
     'num_chairs':1,
     'chair_pos':(1),
-    'height_bookcase':10,
-    'bookcase_pos':8,
+    'height_bookcase':3,
+    'bookcase_pos':2,
     'num_lamps':1,
     'lamp_pos':(2),
     'nun_sofas':1,
@@ -45,6 +45,8 @@ def build_world(my_mission):
         ty = rand[1]
         tz = rand[2]
         my_mission.drawBlock(tx,ty+start_y,tz,"torch")
+    for i in range(config['height_bookcase']):
+        my_mission.drawLine(config['bookcase_pos'],start_y+i,1,config['bookcase_pos']+7,start_y+i,1,'bookshelf')
 
 
 def main():
