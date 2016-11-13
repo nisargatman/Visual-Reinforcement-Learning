@@ -140,15 +140,10 @@ def main():
         agent_host.sendCommand(cmd[n])
         time.sleep(0.5)
         world_state = agent_host.getWorldState()
-        for reward in world_state.rewards:
-            print "Summed reward:",reward.getValue()
-        for error in world_state.errors:
-            print "Error:",error.text
         for frame in world_state.video_frames:
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
             image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
-            os.chdir("../SegNet/Images_train")
-            # save the labels now
+            os.chdir("../SegNet/Images_label")
             image.save('Label%d.jpeg'%n)
             os.chdir("../../World")
             n = n+1

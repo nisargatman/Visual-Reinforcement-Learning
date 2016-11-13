@@ -138,7 +138,7 @@ def main():
 
     # main loop:
     cmd_set = ["move 1", "turn " + str(random.random()*2-1), "move " + str(random.random()*2-1)]
-    for i in range(10):
+    for i in range(1000):
         with open('commands_write.txt', 'a') as f:
             action_id = int(round(random.uniform(1,3)))
             cmd = cmd_set[action_id-1]
@@ -151,15 +151,10 @@ def main():
         agent_host.sendCommand(cmds[n])
         time.sleep(0.5)
         world_state = agent_host.getWorldState()
-        for reward in world_state.rewards:
-            print "Summed reward:",reward.getValue()
-        for error in world_state.errors:
-            print "Error:",error.text
         for frame in world_state.video_frames:
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
             image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
             os.chdir("../SegNet/Images_train")
-            # save the images now
             image.save('Image%d.jpeg'%n)
             os.chdir("../../World")
             n = n+1
