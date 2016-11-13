@@ -94,10 +94,7 @@ def build_world(my_mission):
 def main():
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
     agent_host = MalmoPython.AgentHost()
-    try:
-        os.remove('commands_write.txt')
-    except:
-        pass
+
     mission_file = './xmls/mission_xml.xml'
     with open(mission_file, 'r') as f:
         print "Loading mission from %s" % mission_file
@@ -109,10 +106,9 @@ def main():
     length = 640
     breadth = 480
     my_mission.requestVideo(length, breadth)
-
     my_mission_record = MalmoPython.MissionRecordSpec()
     client_pool = MalmoPython.ClientPool()
-    client_pool.add( MalmoPython.ClientInfo( "127.0.0.1", 10000 ) )
+    client_pool.add( MalmoPython.ClientInfo( "127.0.0.1", 10001 ) )
 
     max_retries = 3
     for retry in range(max_retries):
@@ -136,19 +132,12 @@ def main():
             print "Error:",error.text
     print
 
-    # main loop:
-    cmd_set = ["move 1", "turn " + str(random.random()*2-1), "move " + str(random.random()*2-1)]
-    for i in range(10):
-        with open('commands_write.txt', 'a') as f:
-            action_id = int(round(random.uniform(1,3)))
-            cmd = cmd_set[action_id-1]
-            f.write(cmd+'\n')
-    n = 0
     with open('commands_write.txt','r') as f:
-        cmds = f.readlines()
-    
+        cmd = f.readlines()
+    # main loop:
+    n = 0
     while world_state.is_mission_running:
-        agent_host.sendCommand(cmds[n])
+        agent_host.sendCommand(cmd[n])
         time.sleep(0.5)
         world_state = agent_host.getWorldState()
         for reward in world_state.rewards:
@@ -159,8 +148,8 @@ def main():
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
             image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
             os.chdir("../SegNet/Images_train")
-            # save the images now
-            image.save('Image%d.jpeg'%n)
+            # save the labels now
+            image.save('Label%d.jpeg'%n)
             os.chdir("../../World")
             n = n+1
     print "Mission has stopped."
