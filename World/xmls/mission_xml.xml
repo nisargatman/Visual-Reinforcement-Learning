@@ -18,7 +18,7 @@
   <AgentSection mode="Survival">
     <Name>Nisarg</Name>
     <AgentStart>
-      <Placement x="2" y="227.0" z="2" pitch="30" yaw="0"/>
+      <Placement x="19" y="227.0" z="19" pitch="30" yaw="90"/>
     </AgentStart>
     <AgentHandlers>
       <DiscreteMovementCommands/>

@@ -9,7 +9,7 @@ config = {
     'length':20,
     'breadth':20,
     'height':5,
-    'ceiling':"yes",
+    'ceiling':"no",
     'num_torches':7,
     'torch_pos':((1,0,10),(1,0,19),(1,0,1),(10,0,1),(10,0,19),(19,0,1),(19,0,10)),
     'num_windows':6,
@@ -35,7 +35,7 @@ def build_world(my_mission):
         my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
     if config['ceiling'] == "yes":
         for i in range(config['length']):
-            my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone_wall")
+            my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone")
     torches = config['torch_pos']
     for i in range(config['num_torches']):    
         rand = torches[i]
@@ -52,7 +52,7 @@ def build_world(my_mission):
         my_mission.drawBlock(tx,ty+start_y+2,tz,"glass")
     for i in range(config['height_bookcase']):
         my_mission.drawLine(config['bookcase_pos'],start_y+i,1,config['bookcase_pos']+7,start_y+i,1,'bookshelf')
-    my_mission.drawBlock(config['length'],start_y,config['breadth']-1,'birch_door')
+    my_mission.drawBlock(config['length'],start_y,config['breadth']-1,'cobblestone') # change to birch_door
     for i in range(config['length']/2):
         my_mission.drawLine(config['length']/4+i,start_y,config['length']/4,config['length']/4+i,start_y,config['length']*3/4,'carpet')
     my_mission.drawLine(14,start_y,8,14,start_y,13,"iron_block")
@@ -147,6 +147,9 @@ def main():
     with open('commands_write.txt','r') as f:
         cmds = f.readlines()
     
+    print len(cmds)
+    raw_input()
+
     while world_state.is_mission_running:
         agent_host.sendCommand(cmds[n])
         time.sleep(0.5)
@@ -155,7 +158,7 @@ def main():
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
             image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
             os.chdir("../SegNet/Images_train")
-            image.save('Image%d.jpeg'%n)
+            image.save('Image%d.jpeg'%(n+9852))
             os.chdir("../../World")
             n = n+1
     print "Mission has stopped."
