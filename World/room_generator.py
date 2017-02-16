@@ -33,6 +33,8 @@ def build_world(my_mission):
         else:
             my_mission.drawLine(start_x+config['length'], start_y+i, start_z, start_x+config['length'], start_y+i, start_z+config['breadth']-2,"cobblestone")
         my_mission.drawLine(start_x, start_y+i, start_z+config['breadth'], start_x+config['length'], start_y+i, start_z+config['breadth'], "cobblestone")
+        my_mission.drawBlock(19,227,19,'birch_door')
+        my_mission.drawBlock(20,228,19,'birch_door')
     if config['ceiling'] == "yes":
         for i in range(config['length']):
             my_mission.drawLine(start_x+i, start_y+config['height'], start_z, start_x+i, start_y+config['height'], start_z+config['breadth'], "cobblestone")
@@ -110,7 +112,8 @@ def main():
     breadth = 480
     my_mission.requestVideo(length, breadth)
 
-    my_mission_record = MalmoPython.MissionRecordSpec()
+    my_mission_record = MalmoPython.MissionRecordSpec('for_video.tgz')
+    my_mission_record.recordMP4(20, 400000)
     client_pool = MalmoPython.ClientPool()
     client_pool.add( MalmoPython.ClientInfo( "127.0.0.1", 10000 ) )
 
@@ -138,7 +141,7 @@ def main():
 
     # main loop:
     cmd_set = ["move 1", "turn " + str(random.random()*2-1), "move " + str(random.random()*2-1)]
-    for i in range(1000):
+    for i in range(100):
         with open('commands_write.txt', 'a') as f:
             action_id = int(round(random.uniform(1,3)))
             cmd = cmd_set[action_id-1]
@@ -156,10 +159,10 @@ def main():
         world_state = agent_host.getWorldState()
         for frame in world_state.video_frames:
             print "Frame:",frame.width,'x',frame.height,':',frame.channels,'channels'
-            image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
-            os.chdir("../SegNet/Images_train")
-            image.save('Image%d.jpeg'%(n+9852))
-            os.chdir("../../World")
+            #image = Image.frombytes('RGB', (frame.width, frame.height), str(frame.pixels) ) # to convert to a PIL image
+            #os.chdir("../SegNet/Images_train")
+            # image.save('Image%d.jpeg'%(n+9852))
+            #os.chdir("../../World")
             n = n+1
     print "Mission has stopped."
 
